@@ -1,0 +1,10 @@
+spring:
+    application:
+        name: com.eagle0eye.clinic
+    datasource:
+        url: jdbc:postgresql://localhost:5432/clinic
+        username: postgres
+        password: postgres
+
+    banner:
+        location: banner.txt

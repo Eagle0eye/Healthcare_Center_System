@@ -1,0 +1,48 @@
+package com.eagle0eye.shared.enums;
+
+public enum DOCTOR_DEPARTMENT {
+    // Internal Medicine and subspecialties
+    INTERNAL_MEDICINE,
+    GENERAL_MEDICINE,
+    CARDIOLOGY,
+    ENDOCRINOLOGY,
+    GASTROENTEROLOGY,
+    NEPHROLOGY,
+    PULMONOLOGY,
+    RHEUMATOLOGY,
+
+    // Surgery and subspecialties
+    SURGERY,
+    GENERAL_SURGERY,
+    ORTHOPEDIC_SURGERY,
+    NEUROSURGERY,
+    CARDIOTHORACIC_SURGERY,
+    PLASTIC_SURGERY,
+    VASCULAR_SURGERY,
+    UROLOGY,
+
+    PEDIATRICS,
+    OBSTETRICS_AND_GYNECOLOGY,
+
+    // Specialized departments
+    DERMATOLOGY,
+    NEUROLOGY,
+    PSYCHIATRY,
+    ENT,                  // Ear, Nose, Throat
+    OPHTHALMOLOGY,        // Eye
+    ONCOLOGY,
+    INFECTIOUS_DISEASES,
+
+    EMERGENCY_MEDICINE,
+    ANESTHESIOLOGY,
+    RADIOLOGY,
+    DIAGNOSTIC_RADIOLOGY,
+    INTERVENTIONAL_RADIOLOGY,
+    PATHOLOGY,
+    REHABILITATION_MEDICINE,
+
+    // General Practice
+    FAMILY_MEDICINE,
+    OCCUPATIONAL_MEDICINE,
+    PUBLIC_HEALTH
+}

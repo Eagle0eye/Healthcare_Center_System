@@ -1,0 +1,445 @@
+openapi: 3.0.3
+info:
+  title: Clinic Management System API
+  version: 1.0.0
+  description: API documentation for managing centers, clinics, reservations, and reports.
+
+servers:
+  - url: http://localhost:8080/api/healthcare
+
+tags:
+  - name: Center
+    description: Center and Room Management
+  - name: Clinic
+    description: Clinic operations
+  - name: Doctor
+    description: Doctor and Assistant operations
+  - name: Patient
+    description: Patient-related APIs
+  - name: Reservation
+    description: Reservation booking and management
+  - name: Report
+    description: Patient reports
+
+paths:
+  /centers:
+    get:
+      tags: [Center]
+      summary: Get all centers
+      responses:
+        '200':
+          description: List of centers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Center'
+    post:
+      tags: [Center]
+      summary: Create a new center
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Center'
+      responses:
+        '201':
+          description: Center created
+
+  /rooms:
+    get:
+      tags: [Center]
+      summary: Get rooms by center ID
+      parameters:
+        - in: query
+          name: centerId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of rooms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Room'
+    post:
+      tags: [Center]
+      summary: Create a room
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Room'
+      responses:
+        '201':
+          description: Room created
+
+  /clinics:
+    get:
+      tags: [Clinic]
+      summary: List all clinics
+      responses:
+        '200':
+          description: List of clinics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Clinic'
+    post:
+      tags: [Clinic]
+      summary: Create a clinic
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Clinic'
+      responses:
+        '201':
+          description: Clinic created
+
+  /clinics/{id}/status:
+    patch:
+      tags: [Clinic]
+      summary: Update clinic status
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [available, not_available]
+      responses:
+        '200':
+          description: Status updated
+
+  /doctors:
+    get:
+      tags: [Doctor]
+      summary: List all doctors
+      responses:
+        '200':
+          description: List of doctors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Doctor'
+    post:
+      tags: [Doctor]
+      summary: Create a doctor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Doctor'
+      responses:
+        '201':
+          description: Doctor created
+
+  /assistants:
+    post:
+      tags: [Doctor]
+      summary: Create an assistant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Assistant'
+      responses:
+        '201':
+          description: Assistant created
+        "302":
+          description: Assistant already found
+  /patients:
+    get:
+      tags: [Patient]
+      summary: List all patients
+      responses:
+        '200':
+          description: List of patients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Patient'
+    post:
+      tags: [Patient]
+      summary: Create a patient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+      responses:
+        '201':
+          description: Patient created
+        "302":
+          description: Patient already found
+
+  /reservations:
+    post:
+      tags: [Reservation]
+      summary: Create a reservation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reservation'
+      responses:
+        '201':
+          description: Reservation created
+
+  /reservations/{id}/status:
+    patch:
+      tags: [Reservation]
+      summary: Update reservation status
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [pending, confirmed, completed, cancelled]
+      responses:
+        '200':
+          description: Status updated
+
+  /patient-reports:
+    get:
+      tags: [Report]
+      summary: Get patient reports by patientId
+      parameters:
+        - in: query
+          name: patientId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of reports
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PatientReport'
+    post:
+      tags: [Report]
+      summary: Create a patient report
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientReport'
+      responses:
+        '201':
+          description: Report created
+
+components:
+  schemas:
+    UserInfo:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        fingerprint:
+          type: string
+
+      required:
+        - firstName
+        - phone
+        - email
+        - username
+        - password
+
+    Center:
+      type: object
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+
+    Room:
+      type: object
+      properties:
+        number:
+          type: integer
+        centerId:
+          type: integer
+
+    Clinic:
+      type: object
+      properties:
+        name:
+          type: string
+        roomId:
+          type: integer
+        doctorId:
+          type: integer
+        specialization:
+          type: string
+
+    Doctor:
+      type: object
+      properties:
+        userInfo:
+          $ref: '#/components/schemas/UserInfo'
+        position:
+          type: string
+          enum:
+            - CONSULTANT
+            - GENERAL_DOCTOR
+            - PRACTITIONER
+            - TRAINEE
+        department:
+          type: string
+          enum:
+            - INTERNAL_MEDICINE
+            - GENERAL_MEDICINE
+            - CARDIOLOGY
+            - ENDOCRINOLOGY
+            - GASTROENTEROLOGY
+            - NEPHROLOGY
+            - PULMONOLOGY
+            - RHEUMATOLOGY
+            - SURGERY
+            - GENERAL_SURGERY
+            - ORTHOPEDIC_SURGERY
+            - NEUROSURGERY
+            - CARDIOTHORACIC_SURGERY
+            - PLASTIC_SURGERY
+            - VASCULAR_SURGERY
+            - UROLOGY
+            - PEDIATRICS
+            - OBSTETRICS_AND_GYNECOLOGY
+            - DERMATOLOGY
+            - NEUROLOGY
+            - PSYCHIATRY
+            - ENT
+            - OPHTHALMOLOGY
+            - ONCOLOGY
+            - INFECTIOUS_DISEASES
+            - EMERGENCY_MEDICINE
+            - ANESTHESIOLOGY
+            - RADIOLOGY
+            - DIAGNOSTIC_RADIOLOGY
+            - INTERVENTIONAL_RADIOLOGY
+            - PATHOLOGY
+            - REHABILITATION_MEDICINE
+            - FAMILY_MEDICINE
+            - OCCUPATIONAL_MEDICINE
+            - PUBLIC_HEALTH
+      required:
+        - userInfo
+        - position
+        - department
+
+
+
+
+
+    Assistant:
+      type: object
+      required:
+        - userInfo
+        - position
+      properties:
+        userInfo:
+          $ref: '#/components/schemas/UserInfo'
+        position:
+          type: string
+          enum:
+            - RECEPTIONIST
+            - NURSE
+            - SPECIALIST
+
+    Receptionist:
+      type: object
+      required:
+        - userInfo
+      properties:
+        userInfo:
+          $ref: '#/components/schemas/UserInfo'
+
+    Patient:
+      type: object
+      required:
+        - userInfo
+      properties:
+        userInfo:
+          $ref: '#/components/schemas/UserInfo'
+
+    Reservation:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        clinicId:
+          type: integer
+        doctorId:
+          type: integer
+        patientId:
+          type: integer
+
+    PatientReport:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        reservationId:
+          type: integer
+        patientId:
+          type: integer
+        doctorId:
+          type: integer
+
+
